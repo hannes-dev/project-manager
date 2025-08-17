@@ -16,7 +16,6 @@ impl Config {
                     count + 1
                 }
             });
-
         if non_projects > 0 {
             eprintln!("\n... and {non_projects} non-project folders");
         }

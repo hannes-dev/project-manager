@@ -1,7 +1,8 @@
 use anyhow::{Context, Result};
-use clap::{Parser, Subcommand};
+use cli::{Commands, parse};
 use config::Config;
 
+mod cli;
 mod config;
 mod file_helpers;
 mod list;
@@ -9,39 +10,8 @@ mod new;
 mod project;
 mod write;
 
-#[derive(Parser)]
-#[command(
-    name = "pm",
-    version = "1.0",
-    about = "A CLI for managing project folders"
-)]
-struct Cli {
-    #[command(subcommand)]
-    command: Commands,
-}
-
-#[derive(Subcommand)]
-enum Commands {
-    /// Create a new project
-    New {
-        name: String,
-        #[arg(short, long, value_delimiter = ',')]
-        categories: Option<Vec<String>>,
-    },
-    /// List all active projects
-    List,
-    /// Open the notes for a project
-    Note { name: String },
-    /// Archive a project or check for stale projects
-    Archive {
-        name: Option<String>,
-        #[arg(long)]
-        check_stale: bool,
-    },
-}
-
 fn main() -> Result<()> {
-    let cli = Cli::parse();
+    let cli = parse();
     let config = Config::get().context("Failed to get config")?;
 
     match cli.command {
