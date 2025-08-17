@@ -24,12 +24,10 @@ impl Project {
         }
     }
 
-    pub fn with_categories(categories_opt: Option<Vec<String>>) -> Self {
-        let mut cat = Self::new();
-        if let Some(categories) = categories_opt {
-            cat.categories = categories;
-        }
-        cat
+    pub fn with_categories(categories: Vec<String>) -> Self {
+        let mut project = Self::new();
+        project.categories = categories;
+        project
     }
 
     /// Checks if path has a valid metadata file

@@ -19,7 +19,11 @@ impl Config {
         }
 
         create_dir(&proj_dir)?;
-        proj_dir.write(Project::with_categories(categories))?;
+        let project = match categories {
+            Some(categories) => Project::with_categories(categories),
+            None => Project::new(),
+        };
+        proj_dir.write(project)?;
 
         Ok(())
     }
