@@ -3,10 +3,9 @@ use cli::{Commands, parse};
 use config::Config;
 
 mod cli;
+mod commands;
 mod config;
 mod file_helpers;
-mod list;
-mod new;
 mod project;
 mod write;
 
