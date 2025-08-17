@@ -6,7 +6,7 @@ use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
-    pub projects_dir: PathBuf,
+    pub project_dir: PathBuf,
     pub archive_dir: PathBuf,
 }
 
@@ -24,7 +24,7 @@ impl Config {
 
         if !config_path.exists() {
             let default_config = Config {
-                projects_dir: home_dir.join("projects"),
+                project_dir: home_dir.join("projects"),
                 archive_dir: home_dir.join("archive"),
             };
 
@@ -41,8 +41,8 @@ impl Config {
         let toml_string = std::fs::read_to_string(config_path)?;
         let config: Config = toml::from_str(&toml_string)?;
 
-        if !config.projects_dir.exists() {
-            create_dir_all(&config.projects_dir)?;
+        if !config.project_dir.exists() {
+            create_dir_all(&config.project_dir)?;
         }
         if !config.archive_dir.exists() {
             create_dir_all(&config.archive_dir)?;

@@ -1,12 +1,12 @@
 use std::path::{Path, PathBuf};
 
-use anyhow::Context;
+use anyhow::{Context, Result};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 use crate::write::Write;
 
-const METADATA_FILE: &str = ".project_metadata.toml";
+pub const METADATA_FILE: &str = ".project_metadata.toml";
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Project {
@@ -24,6 +24,15 @@ impl Project {
         }
     }
 
+    pub fn from_path(path: &Path) -> Result<Self> {
+        let metadata_path = path.join(METADATA_FILE);
+        let metadata_content = std::fs::read_to_string(&metadata_path)
+            .with_context(|| format!("Failed to read metadata file from '{metadata_path:?}'"))?;
+        let project: Project = toml::from_str(&metadata_content)
+            .with_context(|| format!("Failed to parse metadata file '{metadata_path:?}'"))?;
+        Ok(project)
+    }
+
     pub fn with_categories(categories: Vec<String>) -> Self {
         let mut project = Self::new();
         project.categories = categories;
@@ -31,7 +40,7 @@ impl Project {
     }
 
     /// Checks if path has a valid metadata file
-    pub fn is_project(path: &Path) -> bool {
+    pub fn exists(path: &Path) -> bool {
         path.join(METADATA_FILE).exists()
     }
 }

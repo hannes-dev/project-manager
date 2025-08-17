@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
@@ -18,6 +20,10 @@ pub enum Commands {
         name: String,
         #[arg(short, long, value_delimiter = ',')]
         categories: Option<Vec<String>>,
+    },
+    Init {
+        #[arg(default_value_os = ".")]
+        path: PathBuf,
     },
     /// List all active projects
     List,

@@ -8,9 +8,9 @@ impl Config {
             bail!("Name cannot contain a space");
         }
 
-        let proj_dir = self.projects_dir.join(&name);
+        let proj_dir = self.project_dir.join(&name);
         if proj_dir.exists() {
-            let error_msg = if Project::is_project(&proj_dir) {
+            let error_msg = if Project::exists(&proj_dir) {
                 format!("Project already exists at {proj_dir:?}",)
             } else {
                 format!("Folder already exists at {proj_dir:?}")
